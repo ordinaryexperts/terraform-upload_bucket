@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: 'This template created an s3 bucket and a user who only has permissions to upload to that bucket'
+Description: 'This template creates an s3 bucket and a user who only has permissions to upload to that bucket'
 
 Resources:
 
