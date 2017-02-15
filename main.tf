@@ -1,4 +1,3 @@
-
 resource "aws_cloudformation_stack" "upload_bucket" {
   name = "upload-bucket-stack"
   capabilities = ["CAPABILITY_IAM"]
