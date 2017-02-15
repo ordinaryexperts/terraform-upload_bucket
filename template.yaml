@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'This template created an s3 bucket and a user who only has permissions to upload to that bucket'
+
+Resources:
+
+  UploadBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      AccessControl: 'Private'
+      VersioningConfiguration:
+        Status: 'Enabled'
+
+  UploaderUser:
+    DependsOn: 'UploadBucket'
+    Type: 'AWS::IAM::User'
+    Properties:
+      Path: '/'
+      Policies:
+        -
+          PolicyName: 'AllowUploadToUploadBucket'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              -
+                Effect: 'Allow'
+                Action:
+                  - 's3:PutObject'
+                Resource: !Join ['', [ 'arn:aws:s3:::', !Ref UploadBucket, '/*' ]]
+        
+  UploaderAccessKey:
+    Type: 'AWS::IAM::AccessKey'
+    Properties:
+      UserName: !Ref UploaderUser
+
+Outputs:
+  UploadBucket:
+    Value: !Ref UploadBucket
+
+  UploaderAccessKeyId:
+    Value: !Ref UploaderAccessKey
+
+  UploaderSecretAccessKey:
+    Value: !GetAtt UploaderAccessKey.SecretAccessKey
