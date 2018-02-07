@@ -21,7 +21,7 @@ Resources:
 
   UploadBucketPolicy:
     Type: 'AWS::S3::BucketPolicy'
-    # Condition: CreateBucketPolicy
+    Condition: CreateBucketPolicy
     Properties:
       Bucket: !Ref UploadBucket
       PolicyDocument:
