@@ -2,6 +2,14 @@ AWSTemplateFormatVersion: '2010-09-09'
 
 Description: 'This template creates an s3 bucket and a user who only has permissions to upload to that bucket'
 
+Parameters:
+  CrossAccountAccessId:
+    Type: String
+    Default: ''
+
+Conditions:
+  CreateBucketPolicy: !Equals [ !Ref CrossAccountAccessId, '' ]
+
 Resources:
 
   UploadBucket:
@@ -10,6 +18,22 @@ Resources:
       AccessControl: 'Private'
       VersioningConfiguration:
         Status: 'Enabled'
+
+  UploadBucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Condition: CreateBucketPolicy
+    Properties:
+      Bucket: !Ref UploadBucket
+      PolicyDocument:
+        Statement:
+          -
+            Sid: 'AllowCrossAccountAccess'
+            Effect: 'Allow'
+            Principal:
+              AWS:
+                - !Ref CrossAccountAccessId
+            Action: 's3:*'
+            Resource: !Sub "arn:aws:s3:::${UploadBucket}/*"
 
   UploaderUser:
     DependsOn: 'UploadBucket'
