@@ -18,7 +18,7 @@ Resources:
       Path: '/'
       Policies:
         -
-          PolicyName: 'AllowUploadToUploadBucket'
+          PolicyName: 'AllowUploadAndAclToUploadBucket'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -26,6 +26,7 @@ Resources:
                 Effect: 'Allow'
                 Action:
                   - 's3:PutObject'
+                  - 's3:PutObjectAcl'
                 Resource: !Join ['', [ 'arn:aws:s3:::', !Ref UploadBucket, '/*' ]]
         
   UploaderAccessKey:
