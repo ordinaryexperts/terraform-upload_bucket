@@ -34,11 +34,14 @@ Resources:
       UserName: !Ref UploaderUser
 
 Outputs:
-  UploadBucket:
-    Value: !Ref UploadBucket
-
   UploaderAccessKeyId:
     Value: !Ref UploaderAccessKey
 
+  UploadBucket:
+    Value: !Ref UploadBucket
+
   UploaderSecretAccessKey:
     Value: !GetAtt UploaderAccessKey.SecretAccessKey
+
+  UploaderUserArn:
+    Value: !GetAtt UploaderUser.Arn
